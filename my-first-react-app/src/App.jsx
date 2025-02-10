@@ -12,10 +12,12 @@ const Card = ({ title }) => {
     console.log(`${title} has been liked: ${hasLiked}`);
   }, [hasLiked]);
 
+
+
   return (
 
     <div className='card' onClick={() => { setCount((prevState) => prevState + 1) }}>
-      <h2>Movie:- {title} <br></br> - {count}</h2>
+      <h2>Movie:- {title} <br></br> - {count || null}</h2>
       <button className='like-btn' onClick={() => { setHasLiked(!hasLiked) }}>{hasLiked ? '❤' : '👍'}</button>
     </div >
 
