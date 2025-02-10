@@ -5,15 +5,17 @@ import './App.css'
 const Card = ({ title }) => {
   const [hasLiked, setHasLiked] = useState(false);
 
+  const [count, setCount] = useState(0);
+
 
   useEffect(() => {
     console.log(`${title} has been liked: ${hasLiked}`);
-  });
+  }, [hasLiked]);
 
   return (
 
-    <div className='card'>
-      <h2>Movie:- {title}</h2>
+    <div className='card' onClick={() => { setCount((prevState) => prevState + 1) }}>
+      <h2>Movie:- {title} <br></br> - {count}</h2>
       <button className='like-btn' onClick={() => { setHasLiked(!hasLiked) }}>{hasLiked ? '❤' : '👍'}</button>
     </div >
 
