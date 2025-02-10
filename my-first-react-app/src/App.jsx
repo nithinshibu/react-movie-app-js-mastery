@@ -4,13 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 
-const Card = ({ title, isCool, actors, rating }) => {
+const Card = ({ title }) => {
 
   return (
 
     <div>
-      <h2>Movie:- {title} with rating = {rating} and actor = {actors[0].name}</h2>
-      {console.log(actors)}
+      <h2>Movie:- {title}</h2>
     </div>
 
   );
@@ -20,12 +19,11 @@ const Card = ({ title, isCool, actors, rating }) => {
 const App = () => {
 
   return (
-    <>
-      <h2>Movies</h2>
-      <Card title="Star Wars" rating={5} isCool={true} actors={[{ name: 'Actor Name' }]}></Card>
-      <Card title="John Wick" rating={5} isCool={true} actors={[{ name: 'Actor Name' }]}></Card>
-      <Card title="Harry Potter" rating={5} isCool={true} actors={[{ name: 'Actor Name' }]}></Card>
-    </>
+    <div className="card-container">
+      <Card title="Star Wars" ></Card>
+      <Card title="John Wick" ></Card>
+      <Card title="Harry Potter" ></Card>
+    </div>
 
   );
 
