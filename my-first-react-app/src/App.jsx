@@ -3,11 +3,12 @@ import Search from "./components/search";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 
+const API_TOKEN = import.meta.env.VITE_TMDB_API_TOKEN;
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 const API_OPTIONS = {
   method: "GET",
-  headers: { accept: "application/json", Authorization: `Bearer ${API_KEY}` },
+  headers: { accept: "application/json", Authorization: `Bearer ${API_TOKEN}` },
 };
 
 const App = () => {
@@ -15,15 +16,37 @@ const App = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [movieList, setMovieList] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const fetchMovies = async () => {
+    setIsLoading(true);
+    setErrorMessage("");
     try {
+      const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+      const response = await fetch(endpoint, API_OPTIONS);
+      if (!response.ok) {
+        throw new Error("Failed to fetch movies");
+      }
+      const data = await response.json();
+      if (data.response === "False") {
+        setErrorMessage(data.Error || "Failed to fetch movies");
+        setMovieList([]);
+        return;
+      }
+      setMovieList(data.results || []);
     } catch (error) {
       console.log(`Error fetching movies: ${error} `);
       setErrorMessage("Error fetching movies.Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchMovies();
+  }, []);
 
   return (
     <main>
@@ -40,7 +63,19 @@ const App = () => {
 
         <section className="all-movies">
           <h2>All Movies</h2>
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          {isLoading ? (
+            <p className="text-white">Loading...</p>
+          ) : errorMessage ? (
+            <p className="text-red-500">{errorMessage}</p>
+          ) : (
+            <ul>
+              {movieList.map((movie) => (
+                <p key={movie.id} className="text-white">
+                  {movie.title}
+                </p>
+              ))}
+            </ul>
+          )}
         </section>
       </div>
     </main>
